@@ -1,0 +1,66 @@
+# Synapsbian Kernel - Building Synapsbian Core of Kernel from Debian and Red Hat
+
+Setup instructions:
+
+    # On Debian
+    sudo apt-get install libncurses5-dev gcc make git exuberant-ctags bc libssl-dev
+    sudo apt-get install libelf-dev
+    # On Red Hat
+    sudo yum install gcc make git ctags ncurses-devel openssl-devel
+    sudo yum install elfutils-libelf-devel bc
+    git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+    git checkout -b stable v4.14.14
+
+Build instructions:
+
+    # Default configuration
+    make defconfig
+    # Old configuration
+    cp /path/to/oldconfig /path/to/linux/.config
+    yes "" | make oldconfig
+    # Compile and wait
+    make
+
+Install instructions:
+
+    sudo make modules_install install
+    sudo vi /etc/default/grub
+    # On Debian
+    sudo update-grub2
+    # On Red Hat
+    sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+    # Finally...
+    sudo reboot
+
+Cleanup instructions:
+
+    # On Debian
+    sudo apt-mark showauto 'linux-image-.*'
+    sudo apt-mark showmanual 'linux-image-.*'
+    sudo apt-get purge <kernel>
+    # On Red Hat
+    sudo package-cleanup --oldkernels --count=1
+
+Miscellaneous instructions:
+
+    rm /boot/vmlinuz*KERNEL-VERSION*
+    rm /boot/initrd*KERNEL-VERSION*
+    rm /boot/System-map*KERNEL-VERSION*
+    rm /boot/config-*KERNEL-VERSION*
+    rm /lib/modules/*KERNEL-VERSION*/
+    rm /var/lib/initramfs/*KERNEL-VERSION*/
+
+Adding Synapsbian Sources:
+
+    # On Debian
+    echo deb http://packages.synapsbian.org/debian $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list
+
+    Import Synapsbian Key file:
+    wget https://synapsbian.org/files/synapsbian-kernel-packages.key -O- | sudo apt-key add -
+
+    Run:
+    sudo apt-get update
+
+    Install the Synapsbian Kernel build packages:
+
+    apt-get install synapsbian-build
