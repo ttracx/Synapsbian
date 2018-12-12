@@ -1,5 +1,5 @@
 # Synapsbian
-Cellular Signaling Inspired Debian Kernel - secured OS intended for immunotherapy research and work environments. 
+Cellular Signaling Inspired Debian Kernel - secured OS intended for neurotransmission research and bioengineering environments. 
 
 # Inspiration behind Synapsbian:
 
